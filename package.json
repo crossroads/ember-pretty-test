@@ -1,6 +1,6 @@
 {
   "name": "ember-pretty-test",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Minimal and clean output of ember tests for CI",
   "main": "index.js",
   "bin": {

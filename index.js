@@ -70,10 +70,16 @@ resolve('ember-cli', {
     root: process.cwd(),
     cliArgs: ['test']
   }).then(() => {
-    log(chalk.yellow('-----'));
-    log(chalk.yellow('----- RESULTS:'));
-    log(chalk.yellow(`----- Testing completed with ${failures} Failures`));
-    log(chalk.yellow('-----'));
-    process.exit(failures === 0 ? 0 : 1);
+    const failed = failures > 0;
+    [
+      '-----',
+      '----- RESULTS:',
+      `----- Testing completed with ${failures} Failures`,
+      '-----'
+    ].forEach((txt) => {
+      const colored = failed ? chalk.yellow(txt) : chalk.green(txt);
+      log(colored);
+    });
+    process.exit(failed ? 1 : 0);
   });
 });

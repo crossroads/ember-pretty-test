@@ -1,4 +1,5 @@
-# ember-pretty-test
+# Ember pretty test
+
 Minimal and colorful output for running EmberJS tests on CI
 
 ### Installation

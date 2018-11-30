@@ -1,8 +1,7 @@
 #! /usr/bin/env node
 
 const chalk         = require('chalk');
-const cli           = require('ember-cli');
-const fs            = require('fs');
+const resolve       = require('resolve');
 
 let enableLog = false;
 let failures  = 0;
@@ -43,21 +42,38 @@ function wrapStream(stream) {
   return _print;
 }
 
+//
+// Hook to stdout
+//
 wrapStream(process.stderr);
 const log = wrapStream(process.stdout);
 
+//
+// Run ember tests
+//
+resolve('ember-cli', {
+  basedir: process.cwd()
+}, function(error, cliPath) {
 
-log(chalk.cyan('Ember tests are running...'));
-cli({
-  inputStream: process.stdin,
-  outputStream: process.stdout,
-  errorStream: process.stderr,
-  root: process.cwd(),
-  cliArgs: ['test']
-}).then(() => {
-  log(chalk.yellow('-----'));
-  log(chalk.yellow('----- RESULTS:'));
-  log(chalk.yellow(`----- Testing completed with ${failures} Failures`));
-  log(chalk.yellow('-----'));
-  process.exit(failures === 0 ? 0 : 1);
+  if (error) {
+    log(error.toString());
+    return process.exit(1);
+  }
+
+  const cli = require(cliPath);
+  log(chalk.cyan('Ember project directory: ' +  process.cwd()));
+  log(chalk.cyan('Ember tests are running...'));
+  cli({
+    inputStream: process.stdin,
+    outputStream: process.stdout,
+    errorStream: process.stderr,
+    root: process.cwd(),
+    cliArgs: ['test']
+  }).then(() => {
+    log(chalk.yellow('-----'));
+    log(chalk.yellow('----- RESULTS:'));
+    log(chalk.yellow(`----- Testing completed with ${failures} Failures`));
+    log(chalk.yellow('-----'));
+    process.exit(failures === 0 ? 0 : 1);
+  });
 });

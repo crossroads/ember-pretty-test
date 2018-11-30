@@ -15,9 +15,9 @@ Install as a dev dependency :
 `npm install --save-dev ember-pretty-test`
 
 Add to package.json
-```json
+```javascript
 "scripts": {
-  // ...
+  // ... 
   "test:ci": "ember-pretty-test"
 }
 ```

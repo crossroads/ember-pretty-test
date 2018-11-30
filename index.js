@@ -59,5 +59,5 @@ cli({
   log(chalk.yellow('----- RESULTS:'));
   log(chalk.yellow(`----- Testing completed with ${failures} Failures`));
   log(chalk.yellow('-----'));
-  process.exit(0);
+  process.exit(failures === 0 ? 0 : 1);
 });
